@@ -1,0 +1,1 @@
+int string dummy 0x7f020000
