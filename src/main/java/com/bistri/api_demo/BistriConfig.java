@@ -40,6 +40,7 @@ public class BistriConfig implements
 	public static boolean callStatus;
 	Context con;
 	private MediaStreamLayout call_layout;
+	AnimationView animationView;
 
 	public BistriConfig(Context con, MediaStreamLayout call_layout) {
 		this.con = con;
@@ -49,19 +50,15 @@ public class BistriConfig implements
 		this.call_layout = call_layout;
 	}
 
+	/**
+	 * My api info appId: "862ac595" appKey: "bec8330aeaaec89b3b2b3669bd4c8a75"
+	 * 
+	 * Bistri default appId: "38077edb" appKey:
+	 * "4f304359baa6d0fd1f9106aaeb116f33"
+	 */
 
- /**
-     * My api info
-     * appId: "862ac595"
-     * appKey: "bec8330aeaaec89b3b2b3669bd4c8a75"
-     * 
-     * Bistri default
-     * appId: "38077edb"
-     * appKey: "4f304359baa6d0fd1f9106aaeb116f33"
-     */
-	 
 	public void StartCall(String name) {
-		
+
 		Log.d(TAG, "init");
 		conference = Conference.getInstance(con);
 		conference.setInfo("862ac595", "bec8330aeaaec89b3b2b3669bd4c8a75");
@@ -81,21 +78,28 @@ public class BistriConfig implements
 
 		// Force
 		statusUpdate(conference.getStatus());
+		
+		
 	}
 
-	public void onDestroy() {
+	@SuppressWarnings("static-access")
+	public synchronized void onDestroy() {
 		networkConnectivityReceiver.setListener(null);
 		conference.removeListener(this);
 
 		if (conference.isInRoom()) {
 			conference.leave();
+			call_layout.removeAllViews();
+//			animationView.setClearCanvas(true);
+//			animationView.clearCanvas=true;
+//			animationView.CleanDraw();
 		}
 		if (conference.getStatus() == Conference.Status.CONNECTED) {
 			conference.disconnect();
-			
-			//end call
-			callStatus=true;
-			endCallStatus=false;
+
+			// end call
+			callStatus = true;
+			endCallStatus = false;
 			MainActivity.status.setText("");
 		}
 	}
@@ -123,33 +127,35 @@ public class BistriConfig implements
 
 	@Override
 	public void onRoomJoined(String room_name) {
-
 	}
 
 	@Override
 	public void onRoomQuitted() {
-		//call end
+		// call end
 		callStatus = true;
 		endCallStatus = false;
+		//call_layout.removeAllViews();
 	}
 
 	@Override
 	public void onNewPeer(PeerStream peerStream) {
 		// peerStream.setHandler( this );
-		 peerStream.setHandler( this );
+		peerStream.setHandler(this);
 	}
 
 	@Override
 	public void onRemovedPeer(PeerStream peerStream) {
-		 if ( !peerStream.hasMedia() )
-	            return;
+		if (!peerStream.hasMedia())
+			return;
 
-	        MediaStream mediaStream = peerStream.getMedia();
-	        call_layout.removeMediaStream(mediaStream);
+		MediaStream mediaStream = peerStream.getMedia();
+		call_layout.removeMediaStream(mediaStream);
+		
 	}
 
 	@Override
 	public void onMediaStream(String peerId, MediaStream mediaStream) {
+		
 		call_layout.addMediaStream(mediaStream);
 	}
 
@@ -192,9 +198,9 @@ public class BistriConfig implements
 			case CONNECTED:
 				if (!conference.isInRoom()) {
 					conference.join(room_name);
-					
-					//call establish
-					callStatus=false;
+
+					// call establish
+					callStatus = false;
 					endCallStatus = true;
 				}
 				break;
@@ -210,25 +216,23 @@ public class BistriConfig implements
 		if (settings == null) {
 			settings = PreferenceManager.getDefaultSharedPreferences(con);
 		}
-		//room name
+		// room name
 		room_name = roomName;
-		//settings.getString(con.getString(R.string.api_room_key),
-		//		con.getString(R.string.api_room_value));
+		// settings.getString(con.getString(R.string.api_room_key),
+		// con.getString(R.string.api_room_value));
 	}
-	
-	@Override
-    public void onPresence(String a, Presence p) {
 
-    }
-	
-	public boolean getEndCallMenuItemStatus()
-	{
+	@Override
+	public void onPresence(String a, Presence p) {
+
+	}
+
+	public boolean getEndCallMenuItemStatus() {
 		return endCallStatus;
 	}
-	
-	public boolean getCallMenuItemStatus()
-	{
+
+	public boolean getCallMenuItemStatus() {
 		return callStatus;
 	}
-	
+
 }

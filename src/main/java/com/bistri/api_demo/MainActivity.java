@@ -34,8 +34,7 @@ public class MainActivity extends Activity {
 	public static final int RESULT_SETTINGS = 1;
 	public static MainActivity mainInstance;
 	AnimationView animationView;
-	
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +43,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		status = (TextView) findViewById(R.id.status);
-		//call_layout = (RelativeLayout) findViewById(R.id.call_layout);
-		call_layout = ( MediaStreamLayout )findViewById( R.id.call_layout );
+		call_layout = (MediaStreamLayout) findViewById(R.id.call_layout);
 
 		mainInstance = this;
 		bistriConfig = new BistriConfig(this, call_layout);
-		
+
 		animationView = new AnimationView(this);
 		addContentView(animationView, new LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -77,58 +75,57 @@ public class MainActivity extends Activity {
 		inflater.inflate(R.menu.menu, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item;
 
-		item = menu.findItem(R.id.call).setVisible(bistriConfig.getCallMenuItemStatus());
-		item = menu.findItem(R.id.endcall).setVisible(bistriConfig.getEndCallMenuItemStatus());
+		item = menu.findItem(R.id.call).setVisible(
+				bistriConfig.getCallMenuItemStatus());
+		item = menu.findItem(R.id.endcall).setVisible(
+				bistriConfig.getEndCallMenuItemStatus());
 		item = menu.findItem(R.id.quit).setVisible(true);
 
 		return super.onPrepareOptionsMenu(menu);
 	}
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection.
 		switch (item.getItemId()) {
 		case R.id.room1:
-			//send
+			// send
 			bistriConfig.StartCall(getString(R.string.room1));
 			return true;
-			
+
 		case R.id.room2:
-			//send
+			// send
 			bistriConfig.StartCall(getString(R.string.room2));
-			return true;	
-		
+			return true;
+
 		case R.id.room3:
-			//send
+			// send
 			bistriConfig.StartCall(getString(R.string.room3));
 			return true;
-			
+
 		case R.id.room4:
-			//send
+			// send
 			bistriConfig.StartCall(getString(R.string.room4));
-			return true;		
+			return true;
 
 		case R.id.endcall:
-			//end call
+			// end call
 			bistriConfig.onDestroy();
 			return true;
-			
+
 		case R.id.quit:
-//			finish();
+			// finish();
 			System.exit(0);
 			return true;
-			
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
 
 }

@@ -1,4 +1,3 @@
-
 package com.bistri.api_demo;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -27,12 +26,10 @@ public class SettingsDialogTransmitter extends AsyncTask<String, Void, String> {
 		this.animationView = animationView;
 	}
 
-	
-
 	@Override
 	protected String doInBackground(String... params) {
 		// TODO Auto-generated method stub
-		
+
 		String host = "talk.google.com";
 		String port = "5222";
 		String service = "gmail.com";
@@ -44,7 +41,7 @@ public class SettingsDialogTransmitter extends AsyncTask<String, Void, String> {
 				Integer.parseInt(port), service);
 		// new ConnectionConfiguration(host, Integer.parseInt(port), service);
 		connection = new XMPPConnection(connConfig);
-		System.out.println("sssstart "+connection.getUser());
+
 		try {
 			connection.connect();
 			connection.login(username, password);
@@ -53,31 +50,15 @@ public class SettingsDialogTransmitter extends AsyncTask<String, Void, String> {
 			animationView.setConnection(connection);
 			Log.i("XMPPClientPar", "[SettingsDialogPar] Connected to "
 					+ connection.getHost());
-			System.out.println("sss");
+
 		} catch (XMPPException ex) {
 			Log.e("XMPPClientPar", "[SettingsDialogPar] Failed to connect to "
 					+ connection.getHost());
 			Log.e("XMPPClientPar", ex.toString());
 			animationView.setConnection(null);
-			System.out.println("ssse");
+
 		}
-//		try {
-//			System.out.print(connection+" u and p "+username +" "+password);
-//			
-//			Log.i("XMPPClientPar", "Logged in as " + connection.getUser());
-//
-//			// Set the status to available
-//			
-//			System.out.println("sssl");
-//		} catch (XMPPException ex) {
-//			Log.e("XMPPClientPar", "[SettingsDialogPar] Failed to log in as "
-//					+ username);
-//			Log.e("XMPPClientPar", ex.toString());
-//			animationView.setConnection(null);
-//			System.out.println("sssle");
-//		}
-		System.out.println("sssend");
-		
+
 		return null;
 	}
 
