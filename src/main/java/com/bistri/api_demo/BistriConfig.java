@@ -90,6 +90,7 @@ public class BistriConfig implements
 		if (conference.isInRoom()) {
 			conference.leave();
 			call_layout.removeAllViews();
+			
 //			animationView.setClearCanvas(true);
 //			animationView.clearCanvas=true;
 //			animationView.CleanDraw();

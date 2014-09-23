@@ -39,6 +39,8 @@ public class AnimationView extends View {
 	public static boolean enableDraw;
 	AnimationView aanimationView;
 
+	private static String roomName = "";
+
 	public AnimationView(Context context) {
 		super(context);
 
@@ -52,7 +54,7 @@ public class AnimationView extends View {
 		enableDraw = false;
 	}
 
-	public  void setConnection(XMPPConnection connection) {
+	public synchronized void setConnection(XMPPConnection connection) {
 		this.connection = connection;
 		if (connection != null) {
 			// Add a packet listener to get messages sent to us
@@ -68,28 +70,37 @@ public class AnimationView extends View {
 
 						msg = message.getBody();
 
+						Log.d(DEBUG_TAG, "room " + roomName);
 						Log.d(DEBUG_TAG, "msg is " + msg);
-						if (msg.length() != 0 || msg != null) {
-							parts = msg.split("&");
 
-							posX = parts[0].replace("[", "").replace("]", "");
-							posY = parts[1].replace("[", "").replace("]", "");
+						if (msg.startsWith(roomName)) {
 
-						} else {
-							Log.d(DEBUG_TAG, "msg is null");
+							if (msg.length() != 0 || msg != null) {
+								parts = msg.split("&");
+
+								posX = parts[0].replace("[", "")
+										.replace("]", "").replace(roomName, "");
+								posY = parts[1].replace("[", "").replace("]",
+										"");
+
+							} else {
+								Log.d(DEBUG_TAG, "msg is null");
+							}
 						}
 						Log.d(DEBUG_TAG, "Received x:" + posX);
 						Log.d(DEBUG_TAG, "Received y:" + posY);
 
-						// Add the incoming message to the list view
-						mHandler.post(new Runnable() {
-							public void run() {
-								if (posX.length() > 2 && posY.length() > 2) {
-									enableDraw = true;
-									invalidate();
+						if (posX != null && posY != null) {
+							// Add the incoming message to the list view
+							mHandler.post(new Runnable() {
+								public void run() {
+									if (posX.length() > 2 && posY.length() > 2) {
+										enableDraw = true;
+										invalidate();
+									}
 								}
-							}
-						});
+							});
+						}
 					}
 				}
 			}, filter);
@@ -97,7 +108,7 @@ public class AnimationView extends View {
 	}
 
 	@Override
-	public  void onDraw(Canvas canvas) {
+	public void onDraw(Canvas canvas) {
 
 		paint.setARGB(255, r, g, b);
 		Integer[] n1 = null;
@@ -147,12 +158,19 @@ public class AnimationView extends View {
 		}
 	}
 
-	/*public synchronized void CleanDraw() {
-		posX = "";
-		posY = "";
-		
+	public static String getRoomName() {
+		return roomName;
 	}
-*/
+
+	public static void setRoomName(String roomName) {
+		AnimationView.roomName = roomName;
+	}
+
+	/*
+	 * public synchronized void CleanDraw() { synchronized (posX){ posX = "0"; }
+	 * synchronized (posY){ posY = "0"; } }
+	 */
+
 	// public void sendMessage() {
 	// String to = "receiverid123@gmail.com";
 	// String text = "auto1";

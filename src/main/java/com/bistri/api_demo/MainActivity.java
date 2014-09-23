@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
 		animationView = new AnimationView(this);
 		addContentView(animationView, new LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		
 	}
 
 	@Override
@@ -89,6 +90,7 @@ public class MainActivity extends Activity {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle item selection.
@@ -96,21 +98,25 @@ public class MainActivity extends Activity {
 		case R.id.room1:
 			// send
 			bistriConfig.StartCall(getString(R.string.room1));
+			animationView.setRoomName(getString(R.string.room1));
 			return true;
 
 		case R.id.room2:
 			// send
 			bistriConfig.StartCall(getString(R.string.room2));
+			animationView.setRoomName(getString(R.string.room2));
 			return true;
 
 		case R.id.room3:
 			// send
 			bistriConfig.StartCall(getString(R.string.room3));
+			animationView.setRoomName(getString(R.string.room3));
 			return true;
 
 		case R.id.room4:
 			// send
 			bistriConfig.StartCall(getString(R.string.room4));
+			animationView.setRoomName(getString(R.string.room4));
 			return true;
 
 		case R.id.endcall:
