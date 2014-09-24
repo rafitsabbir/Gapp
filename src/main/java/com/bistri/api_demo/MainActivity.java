@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 		animationView = new AnimationView(this);
 		addContentView(animationView, new LayoutParams(
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		
+
 	}
 
 	@Override
@@ -121,6 +121,7 @@ public class MainActivity extends Activity {
 
 		case R.id.endcall:
 			// end call
+			animationView.clearDraw();
 			bistriConfig.onDestroy();
 			return true;
 

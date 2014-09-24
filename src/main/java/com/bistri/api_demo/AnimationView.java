@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.graphics.PorterDuff.Mode;
 
 import com.bistri.api_demo.SettingsDialogTransmitter;
 
@@ -37,6 +38,7 @@ public class AnimationView extends View {
 	public static String DEBUG_TAG = AnimationView.class.getSimpleName();
 	public static String[] parts;
 	public static boolean enableDraw;
+	public boolean clear;
 	AnimationView aanimationView;
 
 	private static String roomName = "";
@@ -45,7 +47,7 @@ public class AnimationView extends View {
 		super(context);
 
 		aanimationView = this;
-
+		clear = false;
 		new SettingsDialogTransmitter(aanimationView).execute();
 
 		paint = new Paint();
@@ -114,7 +116,7 @@ public class AnimationView extends View {
 		Integer[] n1 = null;
 		Integer[] n2 = null;
 
-		if (enableDraw == true) {
+		if (enableDraw) {
 
 			if (posX.length() != 0 || posX != null) {
 				String[] s1 = posX.split((","));
@@ -155,6 +157,9 @@ public class AnimationView extends View {
 				}
 			}
 
+		} else if (!enableDraw && clear) {
+			canvas.drawColor(0, Mode.CLEAR);
+			clear = false;
 		}
 	}
 
@@ -164,6 +169,12 @@ public class AnimationView extends View {
 
 	public static void setRoomName(String roomName) {
 		AnimationView.roomName = roomName;
+	}
+
+	public void clearDraw() {
+		clear = true;
+		enableDraw = false;
+		invalidate();
 	}
 
 	/*
