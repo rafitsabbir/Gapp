@@ -26,7 +26,7 @@ public class AnimationView extends View {
 
 	static int x, y, r = 255, g = 0, b = 0;
 	final static int radius = 5;
-	Paint paint, backGround; // using this, we can draw on canvas
+	Paint paint, backGround, shapePaint; // using this, we can draw on canvas
 	ArrayList<Integer> pointsX = new ArrayList<Integer>();
 	ArrayList<Integer> pointsY = new ArrayList<Integer>();
 
@@ -34,14 +34,16 @@ public class AnimationView extends View {
 	private SettingsDialogTransmitter mDialog;
 	private Handler mHandler = new Handler();
 	private XMPPConnection connection;
-	public static String msg, posX, posY;
+	public static String msg, posX, posY, shapes, circles, rects, partXY;
 	public static String DEBUG_TAG = AnimationView.class.getSimpleName();
 	public static String[] parts;
+	public static String[] partsxyAndShapes;
+	public static String[] partsShapes;
 	public static boolean enableDraw;
 	public boolean clear;
 	AnimationView aanimationView;
 
-	private static String roomName = "";
+	private static String roomName = "room1";
 
 	public AnimationView(Context context) {
 		super(context);
@@ -52,6 +54,12 @@ public class AnimationView extends View {
 
 		paint = new Paint();
 		paint.setAntiAlias(true); // for smooth rendering
+
+		shapePaint = new Paint();
+		shapePaint.setAntiAlias(true);
+		shapePaint.setStyle(Paint.Style.STROKE);
+		shapePaint.setARGB(255, r, g, b);
+		shapePaint.setStrokeWidth(5);
 
 		enableDraw = false;
 	}
@@ -71,35 +79,51 @@ public class AnimationView extends View {
 						messages.add(message.getBody());
 
 						msg = message.getBody();
+						Log.d(DEBUG_TAG, "msg is =" + msg);
+						if (msg.trim().startsWith(roomName)) {
 
-						Log.d(DEBUG_TAG, "room " + roomName);
-						Log.d(DEBUG_TAG, "msg is " + msg);
+							if (msg.length() > 0 || msg != null) {
+								try {
+									partsxyAndShapes = msg.split("#");
 
-						if (msg.startsWith(roomName)) {
+									partXY = partsxyAndShapes[0];
+									shapes = partsxyAndShapes[1];
 
-							if (msg.length() != 0 || msg != null) {
-								parts = msg.split("&");
+									parts = partXY.split("&");
 
-								posX = parts[0].replace("[", "")
-										.replace("]", "").replace(roomName, "");
-								posY = parts[1].replace("[", "").replace("]",
-										"");
+									posX = parts[0].replace("[", "")
+											.replace("]", "")
+											.replace(roomName, "");
+									posY = parts[1].replace("[", "").replace(
+											"]", "");
 
+									partsShapes = shapes.split(":");
+									circles = partsShapes[0];
+									rects = partsShapes[1];
+								} catch (Exception e) {
+									Log.d(DEBUG_TAG,
+											"exception " + e.getMessage());
+								}
 							} else {
 								Log.d(DEBUG_TAG, "msg is null");
 							}
+						} else {
+							Log.d(DEBUG_TAG, "room name not matched");
 						}
 						Log.d(DEBUG_TAG, "Received x:" + posX);
 						Log.d(DEBUG_TAG, "Received y:" + posY);
+						Log.d(DEBUG_TAG, "Received circle:" + circles);
+						Log.d(DEBUG_TAG, "Received rect:" + rects);
 
 						if (posX != null && posY != null) {
 							// Add the incoming message to the list view
 							mHandler.post(new Runnable() {
 								public void run() {
-									if (posX.length() > 2 && posY.length() > 2) {
-										enableDraw = true;
-										invalidate();
-									}
+									// if (posX.length() > 2 && posY.length() >
+									// 2) {
+									enableDraw = true;
+									invalidate();
+									// }
 								}
 							});
 						}
@@ -117,8 +141,8 @@ public class AnimationView extends View {
 		Integer[] n2 = null;
 
 		if (enableDraw) {
-
-			if (posX.length() != 0 || posX != null) {
+			Log.d(DEBUG_TAG, "posX.length() " + posX.length());
+			if (posX.length() > 0) {
 				String[] s1 = posX.split((","));
 
 				n1 = new Integer[s1.length];
@@ -134,7 +158,8 @@ public class AnimationView extends View {
 				}
 			}
 
-			if (posY.length() != 0 || posY != null) {
+			Log.d(DEBUG_TAG, "posY.length() " + posY.length());
+			if (posY.length() > 0) {
 				String[] s2 = posY.split((","));
 				n2 = new Integer[s2.length];
 				if (s2.length != 0) {
@@ -151,9 +176,54 @@ public class AnimationView extends View {
 			}
 
 			// draw
-			if (posX != null && posY != null) {
+			if (posX.length() > 0 && posY.length() > 0) {
 				for (int i = 0; i < n1.length; i++) {
 					canvas.drawCircle(n1[i], n2[i], radius, paint);
+				}
+			}
+
+			// draw circle
+			if (circles != null || circles.length() > 0) {
+				String circlrParam[] = circles.split("~");
+				for (int i = 0; i < circlrParam.length; i++) {
+					String seperatedCircleParams[] = circlrParam[i].split(",");
+					canvas.drawCircle(
+							Float.parseFloat(seperatedCircleParams[0]),
+							Float.parseFloat(seperatedCircleParams[1]),
+							Float.parseFloat(seperatedCircleParams[2]),
+							shapePaint);
+				}
+			}
+
+			// draw rect
+			if (rects != null || rects.length() > 0 ) {
+				String rectParam[] = rects.split("~");
+				for (int i = 0; i < rectParam.length; i++) {
+					String seperatedRectParams[] = rectParam[i].split(",");
+					Log.d(DEBUG_TAG,
+							"received rect s 0="
+									+ Float.parseFloat(seperatedRectParams[0])
+									+ " 1="
+									+ Float.parseFloat(seperatedRectParams[1])
+									+ " 2="
+									+ Float.parseFloat(seperatedRectParams[2])
+									+ " 3="
+									+ Float.parseFloat(seperatedRectParams[3]));
+
+					/*
+					 * canvas.drawRect(Float.parseFloat(seperatedRectParams[0]),
+					 * Float.parseFloat(seperatedRectParams[1]),
+					 * Float.parseFloat(seperatedRectParams[2]),
+					 * Float.parseFloat(seperatedRectParams[3]), shapePaint);
+					 */
+					canvas.drawRect(
+							Float.parseFloat(seperatedRectParams[0]),
+							Float.parseFloat(seperatedRectParams[1]),
+							Float.parseFloat(seperatedRectParams[0])
+									+ Float.parseFloat(seperatedRectParams[2]),
+							Float.parseFloat(seperatedRectParams[1])
+									+ Float.parseFloat(seperatedRectParams[3]),
+							shapePaint);
 				}
 			}
 
