@@ -42,7 +42,8 @@ public final class R {
         public static final int edit_text_bg=0x7f020001;
         public static final int gear=0x7f020002;
         public static final int ic_launcher=0x7f020003;
-        public static final int stop=0x7f020004;
+        public static final int ss_icon=0x7f020004;
+        public static final int stop=0x7f020005;
     }
     public static final class id {
         public static final int call=0x7f0c0004;
@@ -69,35 +70,36 @@ public final class R {
         public static final int outgoing=0x7f060001;
     }
     public static final class string {
-        public static final int accept_call=0x7f07000b;
+        public static final int accept_call=0x7f07000c;
         public static final int api_room_key=0x7f070002;
         public static final int api_room_title=0x7f070001;
         public static final int api_room_value=0x7f070003;
         public static final int app_name=0x7f070004;
-        public static final int back_camera=0x7f070009;
-        public static final int call=0x7f070014;
-        public static final int connected=0x7f07000f;
-        public static final int connecting=0x7f07000e;
-        public static final int create=0x7f070013;
-        public static final int create_input_error=0x7f070011;
-        public static final int decline_call=0x7f07000c;
-        public static final int disconnected=0x7f07000d;
+        public static final int back_camera=0x7f07000a;
+        public static final int call=0x7f070015;
+        public static final int connected=0x7f070010;
+        public static final int connecting=0x7f07000f;
+        public static final int create=0x7f070014;
+        public static final int create_input_error=0x7f070012;
+        public static final int decline_call=0x7f07000d;
+        public static final int disconnected=0x7f07000e;
         public static final int dummy=0x7f070000;
-        public static final int endcall=0x7f070015;
-        public static final int front_camera=0x7f070008;
-        public static final int hang_up=0x7f070007;
-        public static final int join_room=0x7f07001b;
-        public static final int login=0x7f070005;
-        public static final int logout=0x7f070006;
-        public static final int no_network=0x7f070010;
-        public static final int quit=0x7f070016;
-        public static final int room1=0x7f070017;
-        public static final int room2=0x7f070018;
-        public static final int room3=0x7f070019;
-        public static final int room4=0x7f07001a;
-        public static final int room_name=0x7f07001c;
-        public static final int voice_chat_invite=0x7f07000a;
-        public static final int welcome_msg=0x7f070012;
+        public static final int endcall=0x7f070016;
+        public static final int front_camera=0x7f070009;
+        public static final int hang_up=0x7f070008;
+        public static final int join_room=0x7f07001c;
+        public static final int login=0x7f070006;
+        public static final int logout=0x7f070007;
+        public static final int no_network=0x7f070011;
+        public static final int quit=0x7f070017;
+        public static final int room1=0x7f070018;
+        public static final int room2=0x7f070019;
+        public static final int room3=0x7f07001a;
+        public static final int room4=0x7f07001b;
+        public static final int room_name=0x7f07001d;
+        public static final int show_demo_voice_trigger=0x7f070005;
+        public static final int voice_chat_invite=0x7f07000b;
+        public static final int welcome_msg=0x7f070013;
     }
     public static final class style {
         public static final int MenuTheme=0x7f0a0000;

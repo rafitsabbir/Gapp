@@ -5,7 +5,8 @@
     <string name="api_room_key">room_key</string>
     <string name="api_room_value">conference-room</string>
 
-    <string name="app_name">Bistri API demo Glass</string>
+    <string name="app_name">ShareStream</string>
+    <string name="show_demo_voice_trigger">Sharestream</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="hang_up">Hang up</string>

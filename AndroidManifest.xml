@@ -16,6 +16,9 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <uses-sdk android:minSdkVersion="15"/>
+    
+    <uses-permission android:name="com.google.android.glass.permission.DEVELOPMENT" />
+    <uses-permission android:name="com.google.android.glass.action.VOICE_TRIGGER" />
 
     <application
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
@@ -27,7 +30,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/ss_icon"
             android:theme="@style/MenuTheme"
             android:immersive="true">
 <!--

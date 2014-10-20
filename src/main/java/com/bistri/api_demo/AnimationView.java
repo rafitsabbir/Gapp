@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import android.graphics.PorterDuff.Mode;
 
 import com.bistri.api_demo.SettingsDialogTransmitter;
@@ -34,7 +35,7 @@ public class AnimationView extends View {
 	private SettingsDialogTransmitter mDialog;
 	private Handler mHandler = new Handler();
 	private XMPPConnection connection;
-	public static String msg, posX, posY, shapes, circles, rects, partXY;
+	public static String msg, posX, posY, shapes, circles, rects, partXY, text;
 	public static String DEBUG_TAG = AnimationView.class.getSimpleName();
 	public static String[] parts;
 	public static String[] partsxyAndShapes;
@@ -88,6 +89,7 @@ public class AnimationView extends View {
 
 									partXY = partsxyAndShapes[0];
 									shapes = partsxyAndShapes[1];
+									text = partsxyAndShapes[2];
 
 									parts = partXY.split("&");
 
@@ -196,7 +198,7 @@ public class AnimationView extends View {
 			}
 
 			// draw rect
-			if (rects != null || rects.length() > 0 ) {
+			if (rects != null || rects.length() > 0) {
 				String rectParam[] = rects.split("~");
 				for (int i = 0; i < rectParam.length; i++) {
 					String seperatedRectParams[] = rectParam[i].split(",");
@@ -227,6 +229,12 @@ public class AnimationView extends View {
 				}
 			}
 
+			// for text card
+			if (!text.equalsIgnoreCase("notext")) {
+				Toast.makeText(this.getContext(),
+						text,
+						Toast.LENGTH_LONG).show();
+			}
 		} else if (!enableDraw && clear) {
 			canvas.drawColor(0, Mode.CLEAR);
 			clear = false;
